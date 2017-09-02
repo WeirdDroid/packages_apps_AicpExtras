@@ -66,6 +66,12 @@
         android:summary="@string/sensor_block_summary"
         android:defaultValue="false" />
 
+    <Preference
+        android:key="wakelock_blocker"
+        android:title="@string/wakelock_blocker_title"
+        android:summary="@string/wakelock_blocker_summary"
+        android:fragment="com.aicp.extras.WakeLockBlocker" />
+
     <!-- Smart Pixels -->
     <com.aicp.extras.preference.SystemSettingMasterSwitchPreference
         android:key="smart_pixels_enable"
