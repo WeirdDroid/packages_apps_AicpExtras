@@ -37,6 +37,8 @@ import com.aicp.extras.BaseSettingsFragment;
 import com.aicp.extras.R;
 import com.aicp.gear.preference.SystemSettingSwitchPreference;
 
+import com.aicp.gear.preference.SeekBarPreferenceCham;
+
 import com.android.internal.util.aicp.DeviceUtils;
 import com.android.internal.utils.ActionUtils;
 import com.android.settings.smartnav.ActionFragment;
@@ -54,11 +56,17 @@ public class HwKeys extends ActionFragment implements
             "torch_long_press_power_timeout";
 
     private static final String HWKEY_DISABLE = "hardware_keys_disable";
+    private static final String KEY_BUTTON_MANUAL_BRIGHTNESS_NEW = "button_manual_brightness_new";
+    private static final String KEY_BUTTON_TIMEOUT = "button_timeout";
+    private static final String KEY_BUTON_BACKLIGHT_OPTIONS = "button_backlight_options_category";
 
     private SwitchPreference mTorchLongPressPowerGesture;
     private ListPreference mTorchLongPressPowerTimeout;
 
     private SwitchPreference mHwKeyDisable;
+    private CustomSeekBarPreference mButtonTimoutBar;
+    private CustomSeekBarPreference mManualButtonBrightness;
+    private PreferenceCategory mButtonBackLightCategory;
 
     // category keys
     private static final String CATEGORY_HWKEY = "hardware_keys";
@@ -112,6 +120,32 @@ public class HwKeys extends ActionFragment implements
             }
         } else {
             prefScreen.removePreference(powerCategory);
+        }
+
+        mManualButtonBrightness = (CustomSeekBarPreference) findPreference(
+                KEY_BUTTON_MANUAL_BRIGHTNESS_NEW);
+        final int customButtonBrightness = getResources().getInteger(
+                com.android.internal.R.integer.config_button_brightness_default);
+        final int currentBrightness = Settings.System.getInt(resolver,
+                Settings.System.CUSTOM_BUTTON_BRIGHTNESS, customButtonBrightness);
+        PowerManager pm = (PowerManager)getActivity().getSystemService(Context.POWER_SERVICE);
+        mManualButtonBrightness.setMax(pm.getMaximumScreenBrightnessSetting());
+        mManualButtonBrightness.setValue(currentBrightness);
+        mManualButtonBrightness.setOnPreferenceChangeListener(this);
+
+        mButtonTimoutBar = (CustomSeekBarPreference) findPreference(KEY_BUTTON_TIMEOUT);
+        int currentTimeout = Settings.System.getInt(resolver,
+                Settings.System.BUTTON_BACKLIGHT_TIMEOUT, 0);
+        mButtonTimoutBar.setValue(currentTimeout);
+        mButtonTimoutBar.setOnPreferenceChangeListener(this);
+
+        final boolean enableBacklightOptions = getResources().getBoolean(
+                com.android.internal.R.bool.config_button_brightness_support);
+
+        mButtonBackLightCategory = (PreferenceCategory) findPreference(KEY_BUTON_BACKLIGHT_OPTIONS);
+
+        if (!enableBacklightOptions) {
+            prefScreen.removePreference(mButtonBackLightCategory);
         }
 
         final boolean needsNavbar = ActionUtils.hasNavbarByDefault(getActivity());
@@ -218,6 +252,14 @@ public class HwKeys extends ActionFragment implements
             Settings.Secure.putInt(getContentResolver(), Settings.Secure.HARDWARE_KEYS_DISABLE,
                     value ? 1 : 0);
             setActionPreferencesEnabled(!value);
+        } else if (preference == mButtonTimoutBar) {
+            int buttonTimeout = (Integer) objValue;
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.BUTTON_BACKLIGHT_TIMEOUT, buttonTimeout);
+        } else if (preference == mManualButtonBrightness) {
+            int buttonBrightness = (Integer) objValue;
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.CUSTOM_BUTTON_BRIGHTNESS, buttonBrightness);
         } else {
             return false;
         }
