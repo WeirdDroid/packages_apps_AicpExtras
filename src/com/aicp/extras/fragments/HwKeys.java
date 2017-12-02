@@ -37,6 +37,7 @@ import android.provider.Settings;
 import com.aicp.extras.BaseSettingsFragment;
 import com.aicp.extras.R;
 import com.aicp.gear.preference.SystemSettingSwitchPreference;
+import com.aicp.gear.preference.SeekBarPreferenceCham;
 
 import com.android.internal.util.aicp.DeviceUtils;
 import com.android.internal.utils.ActionUtils;
@@ -51,6 +52,9 @@ public class HwKeys extends ActionFragment implements Preference.OnPreferenceCha
     private static final String CATEGORY_MENU = "menu_key";
     private static final String CATEGORY_ASSIST = "assist_key";
     private static final String CATEGORY_APPSWITCH = "app_switch_key";
+    private static final String KEY_BUTTON_MANUAL_BRIGHTNESS_NEW = "button_manual_brightness_new";
+    private static final String KEY_BUTTON_TIMEOUT = "button_timeout";
+    private static final String KEY_BUTON_BACKLIGHT_OPTIONS = "button_backlight_options_category";
 
     // Masks for checking presence of hardware keys.
     // Must match values in frameworks/base/core/res/res/values/config.xml
@@ -63,6 +67,9 @@ public class HwKeys extends ActionFragment implements Preference.OnPreferenceCha
     public static final int KEY_MASK_VOLUME = 0x40;
 
     private SwitchPreference mHwKeyDisable;
+    private SeekBarPreferenceCham mButtonTimoutBar;
+    private SeekBarPreferenceCham mManualButtonBrightness;
+    private PreferenceCategory mButtonBackLightCategory;
     private SwitchPreference mTorchLongPressPowerGesture;
     private ListPreference mTorchLongPressPowerTimeout;
 
@@ -111,6 +118,33 @@ public class HwKeys extends ActionFragment implements Preference.OnPreferenceCha
             }
         } else {
             prefScreen.removePreference(powerCategory);
+        }
+
+        final boolean enableBacklightOptions = getResources().getBoolean(
+                com.android.internal.R.bool.config_button_brightness_support);
+
+        mButtonBackLightCategory = (PreferenceCategory) findPreference(KEY_BUTON_BACKLIGHT_OPTIONS);
+
+        mManualButtonBrightness = (SeekBarPreferenceCham) findPreference(
+                KEY_BUTTON_MANUAL_BRIGHTNESS_NEW);
+        final int customButtonBrightness = getResources().getInteger(
+                com.android.internal.R.integer.config_button_brightness_default);
+        final int currentBrightness = Settings.System.getInt(resolver,
+                Settings.System.CUSTOM_BUTTON_BRIGHTNESS, customButtonBrightness);
+        PowerManager pm = (PowerManager)getActivity().getSystemService(Context.POWER_SERVICE);
+        mManualButtonBrightness.setMax(pm.getMaximumScreenBrightnessSetting());
+        mManualButtonBrightness.setValue(currentBrightness);
+        mManualButtonBrightness.setDefaultValue(customButtonBrightness);
+        mManualButtonBrightness.setOnPreferenceChangeListener(this);
+
+        mButtonTimoutBar = (SeekBarPreferenceCham) findPreference(KEY_BUTTON_TIMEOUT);
+        int currentTimeout = Settings.System.getInt(resolver,
+                Settings.System.BUTTON_BACKLIGHT_TIMEOUT, 0);
+        mButtonTimoutBar.setValue(currentTimeout);
+        mButtonTimoutBar.setOnPreferenceChangeListener(this);
+
+        if (!enableBacklightOptions) {
+            mButtonBackLightCategory.getParent().removePreference(mButtonBackLightCategory);
         }
 
         // read bits for present hardware keys
@@ -189,6 +223,16 @@ public class HwKeys extends ActionFragment implements Preference.OnPreferenceCha
             Settings.Secure.putInt(resolver,
                     Settings.Secure.HARDWARE_KEYS_DISABLE, value ? 1 : 0);
             setActionPreferencesEnabled(!value);
+            return true;
+        } else if (preference == mButtonTimoutBar) {
+            int buttonTimeout = (Integer) newValue;
+            Settings.System.putInt(resolver,
+                    Settings.System.BUTTON_BACKLIGHT_TIMEOUT, buttonTimeout);
+            return true;
+        } else if (preference == mManualButtonBrightness) {
+            int buttonBrightness = (Integer) newValue;
+            Settings.System.putInt(resolver,
+                    Settings.System.CUSTOM_BUTTON_BRIGHTNESS, buttonBrightness);
             return true;
         } else if (preference == mTorchLongPressPowerTimeout) {
             handleListChange(mTorchLongPressPowerTimeout, newValue,
