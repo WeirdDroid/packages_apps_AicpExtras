@@ -33,7 +33,8 @@ import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
 import androidx.preference.SwitchPreference;
 
-import com.aicp.extras.BaseSettingsFragment;
+import com.aicp.extras.preference.ActionFragment;
+
 import com.aicp.extras.R;
 import com.aicp.gear.preference.SystemSettingSwitchPreference;
 import com.aicp.gear.preference.SeekBarPreferenceCham;
@@ -42,7 +43,7 @@ import com.android.internal.util.aicp.DeviceUtils;
 import com.android.internal.util.hwkeys.ActionConstants;
 import com.android.internal.util.hwkeys.ActionUtils;
 
-public class HwKeys extends BaseSettingsFragment implements Preference.OnPreferenceChangeListener {
+public class HwKeys extends ActionFragment implements Preference.OnPreferenceChangeListener {
     // category keys
     private static final String CATEGORY_HWKEY = "hardware_keys";
     private static final String CATEGORY_BACK = "back_key";
