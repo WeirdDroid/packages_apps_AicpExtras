@@ -28,10 +28,9 @@
         android:title="@string/navigation_category">
 
         <PreferenceScreen
-            android:title="@string/navigation_title"
+            android:fragment="com.android.settings.smartnav.NavigationBarSettings"
             android:summary="@string/navigation_summary"
-            android:icon="@drawable/ic_settings_navbar"
-            android:fragment="com.aicp.extras.fragments.Navigation" />
+            android:icon="@drawable/ic_settings_navbar" />
 
         <PreferenceScreen
             android:title="@string/recents_title"
