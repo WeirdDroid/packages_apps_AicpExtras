@@ -43,10 +43,12 @@ import com.aicp.extras.R;
 
 import com.aicp.gear.preference.SecureSettingIntListPreference;
 import com.aicp.extras.preference.SecureSettingMasterSwitchPreference;
+import com.aicp.gear.preference.SystemSettingSwitchPreference;
 
 public class NavigationBarSettings extends BaseSettingsFragment implements Preference.OnPreferenceChangeListener {
     private static final String KEY_NAVBAR_MODE = "navigation_bar_mode";
     private static final String KEY_DEFAULT_NAVBAR_SETTINGS = "default_settings";
+    private static final String KEY_ONEHAND_UI_TOGGLE = "one_hand_mode_enabled";
     private static final String KEY_FLING_NAVBAR_SETTINGS = "fling_settings";
     private static final String KEY_CATEGORY_NAVIGATION_INTERFACE = "category_navbar_interface";
     private static final String KEY_CATEGORY_NAVIGATION_GENERAL = "category_navbar_general";
@@ -60,6 +62,7 @@ public class NavigationBarSettings extends BaseSettingsFragment implements Prefe
     private PreferenceCategory mNavGeneral;
     private PreferenceScreen mSmartbarSettings;
     private Preference mDefaultSettings;
+    private SystemSettingSwitchPreference mOneHandMode;
     private SecureSettingMasterSwitchPreference mPulseSettings;
 
     @Override
@@ -74,6 +77,7 @@ public class NavigationBarSettings extends BaseSettingsFragment implements Prefe
         mNavGeneral = (PreferenceCategory) findPreference(KEY_CATEGORY_NAVIGATION_GENERAL);
         mNavbarMode = (SecureSettingIntListPreference) findPreference(KEY_NAVBAR_MODE);
         mDefaultSettings = (Preference) findPreference(KEY_DEFAULT_NAVBAR_SETTINGS);
+        mOneHandMode = (SystemSettingSwitchPreference) findPreference(KEY_ONEHAND_UI_TOGGLE);
         mFlingSettings = (PreferenceScreen) findPreference(KEY_FLING_NAVBAR_SETTINGS);
         mSmartbarSettings = (PreferenceScreen) findPreference(KEY_SMARTBAR_SETTINGS);
         mPulseSettings = (SecureSettingMasterSwitchPreference) findPreference(KEY_PULSE_SETTINGS);
@@ -98,6 +102,8 @@ public class NavigationBarSettings extends BaseSettingsFragment implements Prefe
             case 0:
                 mDefaultSettings.setEnabled(true);
                 mDefaultSettings.setSelectable(true);
+                mOneHandMode.setEnabled(true);
+                mOneHandMode.setSelectable(true);
                 mSmartbarSettings.setEnabled(false);
                 mSmartbarSettings.setSelectable(false);
                 mFlingSettings.setEnabled(false);
@@ -106,6 +112,8 @@ public class NavigationBarSettings extends BaseSettingsFragment implements Prefe
             case 1:
                 mDefaultSettings.setEnabled(false);
                 mDefaultSettings.setSelectable(false);
+                mOneHandMode.setEnabled(false);
+                mOneHandMode.setSelectable(false);
                 mSmartbarSettings.setEnabled(true);
                 mSmartbarSettings.setSelectable(true);
                 mFlingSettings.setEnabled(false);
@@ -114,6 +122,8 @@ public class NavigationBarSettings extends BaseSettingsFragment implements Prefe
             case 2:
                 mDefaultSettings.setEnabled(false);
                 mDefaultSettings.setSelectable(false);
+                mOneHandMode.setEnabled(false);
+                mOneHandMode.setSelectable(false);
                 mSmartbarSettings.setEnabled(false);
                 mSmartbarSettings.setSelectable(false);
                 mFlingSettings.setEnabled(true);

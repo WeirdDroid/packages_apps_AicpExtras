@@ -683,8 +683,8 @@
     <string name="smartbar_longpress_delay_normal">Normale vertraging</string>
     <string name="smartbar_longpress_delay_long">Lange vertraging</string>
     <string name="smartbar_custom_icon_size_title">Aangepaste pictogramschaling</string>
-    <string name="one_handed_mode_title">Enkelhandige modus</string>
-    <string name="one_handed_mode_summary">Toestaan om over de navigatiebalk te vegen om één hand modus te activeren</string>
+    <string name="one_hand_mode_title">Enkelhandige modus</string>
+    <string name="one_hand_mode_summary">Toestaan om over de navigatiebalk te vegen om één hand modus te activeren</string>
     <string name="smartbar_double_tap_sleep_title">Dubbeltikken voor slaapstand</string>
     <string name="smartbar_double_tap_sleep_summary">Dubbeltikken op lege navigatiebalk gebieden om slaapstand in te schakelen</string>
     <string name="write_settings_off">Enkelhandige modus</string>

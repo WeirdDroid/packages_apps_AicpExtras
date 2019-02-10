@@ -688,8 +688,8 @@ Ordner AICP_backup gesichert.\nAlte Sicherungen müssen manuell gelöscht werden
     <string name="smartbar_longpress_delay_normal">Normale Verzögerung</string>
     <string name="smartbar_longpress_delay_long">Lange Verzögerung</string>
     <string name="smartbar_custom_icon_size_title">Benutzerdefinierte Symbolgröße</string>
-    <string name="one_handed_mode_title">Ein-Hand-Modus</string>
-    <string name="one_handed_mode_summary">Aktiviert die Bedienung mit einer Hand, wenn über die Navigationsleiste gewischt wird</string>
+    <string name="one_hand_mode_title">Ein-Hand-Modus</string>
+    <string name="one_hand_mode_summary">Aktiviert die Bedienung mit einer Hand, wenn über die Navigationsleiste gewischt wird</string>
     <string name="smartbar_double_tap_sleep_title">Ruhezustand durch doppeltes Tippen (DT2S)</string>
     <string name="smartbar_double_tap_sleep_summary">Für Ruhrzustand zweimal auf einen leeren Bereich der Navigationsleiste tippen</string>
     <string name="write_settings_off">Ein-Hand-Modus</string>

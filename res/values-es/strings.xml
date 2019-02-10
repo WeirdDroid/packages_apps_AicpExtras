@@ -679,8 +679,8 @@
     <string name="smartbar_longpress_delay_normal">Tiempo de espera normal</string>
     <string name="smartbar_longpress_delay_long">Tiempo de espera largo</string>
     <string name="smartbar_custom_icon_size_title">Escala personalizada de iconos</string>
-    <string name="one_handed_mode_title">Modo a una mano</string>
-    <string name="one_handed_mode_summary">Permite deslizar en la barra de navegación para activar el modo una sola mano</string>
+    <string name="one_hand_mode_title">Modo a una mano</string>
+    <string name="one_hand_mode_summary">Permite deslizar en la barra de navegación para activar el modo una sola mano</string>
     <string name="smartbar_double_tap_sleep_title">Doble toque para apagar pantalla</string>
     <string name="smartbar_double_tap_sleep_summary">Doble toque en la zona vacía de la barra de navegación para apagar la pantalla</string>
     <string name="write_settings_off">Modo a una mano</string>
