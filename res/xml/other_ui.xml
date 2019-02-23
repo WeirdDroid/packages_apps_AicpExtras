@@ -60,6 +60,7 @@
          android:key="doze_on_charge"
          android:title="@string/doze_on_charge_title"
          android:summary="@string/doze_on_charge_summary"
+         aicpextras:requiresConfig ="@*android:bool/config_dozeAlwaysOnDisplayAvailable" 
          android:defaultValue="false" />
 
     <!-- Wake on plug -->
