@@ -52,6 +52,7 @@ import com.aicp.extras.utils.Util;
 public class Recents extends BaseSettingsFragment implements OnPreferenceChangeListener {
 
     private static final String PREF_STOCK_RECENTS_CATEGORY = "stock_recents_category";
+    private static final String PREF_OREO_RECENTS_CATEGORY = "oreo_recents_category";
     private static final String PREF_ALTERNATIVE_RECENTS_CATEGORY = "alternative_recents_category";
     private static final String PREF_SWIPE_UP_ENABLED = "swipe_up_enabled_warning";
     private static final String RECENTS_COMPONENT_TYPE = "recents_component";
@@ -66,6 +67,7 @@ public class Recents extends BaseSettingsFragment implements OnPreferenceChangeL
     private PreferenceCategory oreoRecentsCat;
 
     private PreferenceCategory mStockRecentsCategory;
+    private PreferenceCategory mOreoRecentsCategory;
     private PreferenceCategory mAlternativeRecentsCategory;
 
     @Override
@@ -108,6 +110,7 @@ public class Recents extends BaseSettingsFragment implements OnPreferenceChangeL
         oreoRecentsCat.setEnabled(type == RECENTS_COMPONENT_OREO);
 
         mStockRecentsCategory = (PreferenceCategory) findPreference(PREF_STOCK_RECENTS_CATEGORY);
+        mOreoRecentsCategory = (PreferenceCategory) findPreference(PREF_OREO_RECENTS_CATEGORY);
         mAlternativeRecentsCategory =
                 (PreferenceCategory) findPreference(PREF_ALTERNATIVE_RECENTS_CATEGORY);
 
@@ -154,7 +157,6 @@ public class Recents extends BaseSettingsFragment implements OnPreferenceChangeL
 
     private void updateDependencies(Preference updatedPreference, Boolean newValue) {
         // Disable stock recents category if alternative enabled
-        /* TODO re-enable once we have stock recents settings
         boolean alternativeRecentsEnabled = newValue != null && newValue;
         if (!alternativeRecentsEnabled) {
             for (int i = 0; i < mAlternativeRecentsCategory.getPreferenceCount(); i++) {
@@ -171,7 +173,7 @@ public class Recents extends BaseSettingsFragment implements OnPreferenceChangeL
             }
         }
         mStockRecentsCategory.setEnabled(!alternativeRecentsEnabled);
-        */
+        mOreoRecentsCategory.setEnabled(!alternativeRecentsEnabled);
     }
 
     @Override
