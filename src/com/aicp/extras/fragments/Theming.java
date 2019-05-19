@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.v7.preference.Preference;
+import android.os.SystemProperties;
 
 import com.aicp.extras.BaseSettingsFragment;
 import com.aicp.extras.R;
@@ -32,7 +33,12 @@ import com.aicp.gear.util.ThemeOverlayHelper;
 
 public class Theming extends BaseSettingsFragment implements Preference.OnPreferenceChangeListener {
 
+    private static final String ACCENT_COLOR = "accent_color";
+    private static final String ACCENT_COLOR_PROP = "persist.sys.theme.accentcolor";
+
     private Handler mHandler = new Handler();
+
+    private ColorPickerPreference mThemeColor;
 
     @Override
     protected int getPreferenceResource() {
@@ -61,9 +67,38 @@ public class Theming extends BaseSettingsFragment implements Preference.OnPrefer
             Util.showRebootDialog(getActivity(), getString(R.string.icon_shape_changed_title),
                     getString(R.string.icon_shape_changed_message), true);
             return true;
+        } else if (preference == mThemeColor) {
+            int color = (Integer) newValue;
+            String hexColor = String.format("%08X", (0xFFFFFFFF & color));
+            SystemProperties.set(ACCENT_COLOR_PROP, hexColor);
+            mOverlayService.reloadAndroidAssets(UserHandle.USER_CURRENT);
+            mOverlayService.reloadAssets("com.android.settings", UserHandle.USER_CURRENT);
+            mOverlayService.reloadAssets("com.android.systemui", UserHandle.USER_CURRENT);
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        addPreferencesFromResource(R.xml.theming);
+        // OMS and PMS setup
+        mOverlayService = ServiceManager.getService(Context.OVERLAY_SERVICE) != null ? new OverlayManagerWrapper()
+                : null;
+        mPackageManager = getActivity().getPackageManager();
+        mHandler = new Handler();
+        setupAccentPref();
+    }
+
+    private void setupAccentPref() {
+        mThemeColor = (ColorPickerPreference) findPreference(ACCENT_COLOR);
+        String colorVal = SystemProperties.get(ACCENT_COLOR_PROP, "-1");
+        int color = "-1".equals(colorVal)
+                ? Color.WHITE
+                : Color.parseColor("#" + colorVal);
+        mThemeColor.setNewPreviewColor(color);
+        mThemeColor.setOnPreferenceChangeListener(this);
     }
 
     private void postRestartSystemUi() {

@@ -41,6 +41,12 @@
         android:entryValues="@array/theming_accent_values"
         android:defaultValue="0" />
 
+    <net.margaritov.preference.colorpicker.ColorPickerPreference
+        android:key="accent_color"
+        android:title="@string/accent_color"
+        android:defaultValue="0xffffff"
+        android:persistent="false" />
+
     <com.aicp.gear.preference.SystemSettingIntListPreference
         android:key="theming_corners"
         android:title="@string/theming_corners_title"
