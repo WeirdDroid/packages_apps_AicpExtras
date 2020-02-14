@@ -21,11 +21,16 @@ package com.aicp.extras.smartnav;
 
 import java.util.ArrayList;
 
+import com.android.internal.logging.nano.MetricsProto;
 import com.android.internal.util.hwkeys.ActionConstants.Defaults;
 import com.android.internal.util.hwkeys.ActionHandler;
 import com.android.internal.util.hwkeys.Config;
 import com.android.internal.util.hwkeys.Config.ActionConfig;
 import com.android.internal.util.hwkeys.Config.ButtonConfig;
+
+import com.aicp.extras.preference.ShortcutPickHelper;
+import com.aicp.extras.preference.ActionPreference;
+import com.aicp.extras.preference.CustomActionListAdapter;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -36,11 +41,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceScreen;
 
-import com.aicp.extras.BaseSettingsFragment;
+import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.aicp.extras.R;
-import com.aicp.extras.smartnav.ActionPreference;
-import com.aicp.extras.smartnav.CustomActionListAdapter;
-import com.aicp.extras.smartnav.ShortcutPickHelper;
+import com.aicp.extras.BaseSettingsFragment;
 
 public abstract class ActionFragment extends BaseSettingsFragment implements
         ShortcutPickHelper.OnPickListener {
@@ -145,7 +148,7 @@ public abstract class ActionFragment extends BaseSettingsFragment implements
                 final DialogInterface.OnClickListener customActionClickListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int item) {
-                        findAndUpdatePreference(adapter.getItem(item).action, mHolderTag);
+                        findAndUpdatePreference(adapter.getItem(item), mHolderTag);
                         dialog.dismiss();
                     }
                 };
